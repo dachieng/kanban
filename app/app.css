@@ -11,6 +11,22 @@
   border-radius: --value(--radius-*);
 }
 
+@utility width-* {
+  width: --value(--width-*);
+}
+
+@utility container-padding-mobile {
+  padding: var(--spacing-spacing-xl);
+}
+
+@utility container-padding-desktop {
+  padding: var(--spacing-spacing-4xl);
+}
+
+@utility container-max-width-desktop {
+  max-width: var(--width-3xl);
+}
+
 html,
 body {
   @apply bg-white;

@@ -119,3 +119,79 @@ export const radii: Record<RadiusName, string> = {
   "4xl": "24px",
   full: "9999px",
 };
+
+export type SpacingName =
+  | "spacing-none"
+  | "spacing-xxs"
+  | "spacing-xs"
+  | "spacing-sm"
+  | "spacing-md"
+  | "spacing-lg"
+  | "spacing-xl"
+  | "spacing-2xl"
+  | "spacing-3xl"
+  | "spacing-4xl"
+  | "spacing-5xl"
+  | "spacing-6xl"
+  | "spacing-7xl"
+  | "spacing-8xl"
+  | "spacing-9xl"
+  | "spacing-10xl"
+  | "spacing-11xl";
+
+export const spacing: Record<SpacingName, string> = {
+  "spacing-none": "0px",
+  "spacing-xxs": "2px",
+  "spacing-xs": "4px",
+  "spacing-sm": "6px",
+  "spacing-md": "8px",
+  "spacing-lg": "12px",
+  "spacing-xl": "16px",
+  "spacing-2xl": "20px",
+  "spacing-3xl": "24px",
+  "spacing-4xl": "32px",
+  "spacing-5xl": "40px",
+  "spacing-6xl": "48px",
+  "spacing-7xl": "64px",
+  "spacing-8xl": "80px",
+  "spacing-9xl": "96px",
+  "spacing-10xl": "128px",
+  "spacing-11xl": "160px",
+};
+
+export type WidthName =
+  | "xxs"
+  | "xs"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl"
+  | "4xl"
+  | "5xl"
+  | "6xl";
+
+export const widths: Record<WidthName, string> = {
+  xxs: "320px",
+  xs: "384px",
+  sm: "480px",
+  md: "560px",
+  lg: "640px",
+  xl: "768px",
+  "2xl": "1024px",
+  "3xl": "1280px",
+  "4xl": "1440px",
+  "5xl": "1600px",
+  "6xl": "1920px",
+};
+
+export const paragraphMaxWidth = "720px";
+
+// Extracted from Figma (5. Containers/Value.tokens.json). All three alias to
+// primitives we already have — reused directly rather than re-declared.
+export const container = {
+  paddingMobile: spacing["spacing-xl"],
+  paddingDesktop: spacing["spacing-4xl"],
+  maxWidthDesktop: widths["3xl"],
+};

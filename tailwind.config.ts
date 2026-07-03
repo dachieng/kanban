@@ -1,6 +1,13 @@
 import type { Config } from "tailwindcss";
 
-import { colors, radii, semanticColors } from "./theme/theme";
+import {
+  colors,
+  paragraphMaxWidth,
+  radii,
+  semanticColors,
+  spacing,
+  widths,
+} from "./theme/theme";
 import { fontSizes, fontWeights, lineHeights } from "./theme/typography";
 
 function toTailwindScale(name: keyof typeof colors) {
@@ -31,6 +38,11 @@ export default {
       fontSize: fontSizes,
       lineHeight: lineHeights,
       borderRadius: radii,
+      spacing,
+      width: widths,
+      maxWidth: {
+        paragraph: paragraphMaxWidth,
+      },
     },
   },
 } satisfies Config;
