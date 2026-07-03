@@ -8,3 +8,6 @@
 
 # Agent skills
 /.agents/
+
+# Figma design token exports
+/1. Color modes/
