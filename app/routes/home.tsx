@@ -46,6 +46,37 @@ export default function Home() {
         border-success-dark
       </div>
       <p className="text-success-light">text-success-light</p>
+      <div className="flex w-full gap-4">
+        <p className="font-regular">font-regular</p>
+        <p className="font-medium">font-medium</p>
+        <p className="font-semibold">font-semibold</p>
+        <p className="font-bold">font-bold</p>
+      </div>
+      <div className="flex w-full flex-wrap items-baseline gap-4">
+        <p className="text-xxs">text-xxs</p>
+        <p className="text-xs">text-xs</p>
+        <p className="text-sm">text-sm</p>
+        <p className="text-md">text-md</p>
+        <p className="text-lg">text-lg</p>
+        <p className="text-xl">text-xl</p>
+        <p className="text-display-xs">display-xs</p>
+        <p className="text-display-sm">display-sm</p>
+        <p className="text-display-md">display-md</p>
+        <p className="text-display-lg">display-lg</p>
+        <p className="text-display-xl">display-xl</p>
+        <p className="text-display-2xl">display-2xl</p>
+      </div>
+      <div className="flex w-full flex-wrap gap-4">
+        <p className="w-40 border border-secondary-light text-sm leading-xs">
+          leading-xs: The quick brown fox jumps over the lazy dog.
+        </p>
+        <p className="w-40 border border-secondary-light text-sm leading-lg">
+          leading-lg: The quick brown fox jumps over the lazy dog.
+        </p>
+        <p className="w-40 border border-secondary-light text-sm leading-display-2xl">
+          leading-display-2xl: The quick brown fox jumps over the lazy dog.
+        </p>
+      </div>
     </div>
   );
 }
