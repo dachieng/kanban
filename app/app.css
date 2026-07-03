@@ -7,6 +7,10 @@
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+@utility radius-* {
+  border-radius: --value(--radius-*);
+}
+
 html,
 body {
   @apply bg-white;

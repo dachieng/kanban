@@ -77,6 +77,19 @@ export default function Home() {
           leading-display-2xl: The quick brown fox jumps over the lazy dog.
         </p>
       </div>
+      <div className="flex w-full flex-wrap items-center gap-4">
+        <div className="radius-none size-16 border-2 border-brand" />
+        <div className="radius-xxs size-16 border-2 border-brand" />
+        <div className="radius-xs size-16 border-2 border-brand" />
+        <div className="radius-sm size-16 border-2 border-brand" />
+        <div className="radius-md size-16 border-2 border-brand" />
+        <div className="radius-lg size-16 border-2 border-brand" />
+        <div className="radius-xl size-16 border-2 border-brand" />
+        <div className="radius-2xl size-16 border-2 border-brand" />
+        <div className="radius-3xl size-16 border-2 border-brand" />
+        <div className="radius-4xl size-16 border-2 border-brand" />
+        <div className="radius-full size-16 border-2 border-brand" />
+      </div>
     </div>
   );
 }
