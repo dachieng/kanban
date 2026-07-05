@@ -1,3 +1,70 @@
+import Button from "./ui/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/Card";
+import Input from "./ui/Input";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/Popover";
+
+const MailIcon = () => (
+  <svg
+    className="size-4"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="m3 7 9 6 9-6" />
+  </svg>
+);
+
+const HelpCircleIcon = () => (
+  <svg
+    className="size-4"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <circle cx="12" cy="12" r="9" />
+    <path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 1.75-2.5 3.5" />
+    <path d="M12 17h.01" />
+  </svg>
+);
+
+const AlertCircleIcon = () => (
+  <svg
+    className="size-4"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v6" />
+    <path d="M12 17h.01" />
+  </svg>
+);
+
+const buttonVariants = [
+  "primary",
+  "primary-outline",
+  "destructive",
+  "destructive-outline",
+  "success",
+  "success-outline",
+  "warning",
+  "warning-outline",
+  "ghost",
+] as const;
+
+const buttonSizes = ["sm", "md", "lg", "xl", "2xl"] as const;
+
 const Examples = () => {
   return (
     <div className="flex flex-wrap gap-4 p-8">
@@ -138,6 +205,92 @@ const Examples = () => {
         <div className="container-max-width-desktop bg-secondary-light p-spacing-xs text-xs">
           container-max-width-desktop
         </div>
+      </div>
+      <div className="flex w-full flex-col gap-4">
+        <div className="flex flex-wrap items-center gap-4">
+          {buttonSizes.map((size) => (
+            <Button key={size} size={size}>
+              {size}
+            </Button>
+          ))}
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          {buttonVariants.map((variant) => (
+            <Button key={variant} variant={variant}>
+              {variant}
+            </Button>
+          ))}
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <Button disabled>disabled</Button>
+        </div>
+      </div>
+      <div className="grid w-full max-w-3xl grid-cols-2 gap-4">
+        <Input
+          label="Email"
+          required
+          placeholder="zuri@safaricom.com"
+          endIcon={<HelpCircleIcon />}
+          hint="This is a hint text to help user."
+        />
+        <Input
+          label="Email"
+          required
+          placeholder="zuri@safaricom.com"
+          startIcon={<MailIcon />}
+          endIcon={<HelpCircleIcon />}
+          hint="This is a hint text to help user."
+        />
+        <Input
+          label="Email"
+          required
+          placeholder="zuri@safaricom.com"
+          startIcon={<MailIcon />}
+          endIcon={<AlertCircleIcon />}
+          error="This is an error message."
+        />
+        <Input
+          label="Email"
+          required
+          placeholder="zuri@safaricom.com"
+          startIcon={<MailIcon />}
+          endIcon={<HelpCircleIcon />}
+          hint="This is a hint text to help user."
+          disabled
+        />
+      </div>
+      <div className="flex w-full flex-wrap items-start gap-4">
+        <Card className="w-80">
+          <CardHeader>
+            <CardTitle>Card title</CardTitle>
+            <CardDescription>
+              A short description that supports the card title.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm leading-sm text-secondary-900">
+              Card content goes here. Any component or text can be placed
+              inside this area.
+            </p>
+          </CardContent>
+          <CardFooter>
+            <Button size="sm">Confirm</Button>
+            <Button size="sm" variant="primary-outline">
+              Cancel
+            </Button>
+          </CardFooter>
+        </Card>
+        <Popover>
+          <PopoverTrigger>
+            <Button variant="primary-outline">Open popover</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <p className="font-medium text-secondary-900">Popover title</p>
+            <p className="mt-spacing-xs text-secondary-500">
+              Click outside or press escape to close this popover.
+            </p>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );
