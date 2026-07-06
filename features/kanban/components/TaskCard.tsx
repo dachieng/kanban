@@ -3,12 +3,14 @@
 import { useMutation } from "@apollo/client/react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Check, Pencil, Trash2, X } from "lucide-react";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { Box, Card, IconButton, TextField, Typography } from "@mui/material";
 import { useState, type KeyboardEvent } from "react";
 
-import Button from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
-import Input from "@/components/ui/Input";
+import { spacing } from "@/theme/theme";
 
 import type { Task } from "../interfaces";
 import { DELETE_TASK, GET_COLUMNS, UPDATE_TASK } from "../queries";
@@ -22,7 +24,9 @@ const TaskCard = ({ task }: { task: Task }) => {
   const [updateTask, { loading: saving }] = useMutation(UPDATE_TASK, {
     refetchQueries,
   });
-  const [deleteTask] = useMutation(DELETE_TASK, { refetchQueries });
+  const [deleteTask, { loading: deleting }] = useMutation(DELETE_TASK, {
+    refetchQueries,
+  });
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: task.id, disabled: isEditing });
@@ -58,35 +62,35 @@ const TaskCard = ({ task }: { task: Task }) => {
 
   if (isEditing) {
     return (
-      <Card className="flex flex-col gap-spacing-sm p-spacing-md shadow-none">
-        <Input
+      <Card
+        variant="outlined"
+        sx={{ display: "flex", flexDirection: "column", gap: spacing["spacing-sm"], p: spacing["spacing-md"] }}
+      >
+        <TextField
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           onKeyDown={handleKeyDown}
-          error={error ?? undefined}
+          error={Boolean(error)}
+          helperText={error}
           autoFocus
+          size="small"
+          fullWidth
         />
-        <div className="flex justify-end gap-spacing-sm">
-          <Button
-            variant="ghost"
-            size="sm"
-            aria-label="Cancel edit"
-            className="text-secondary-500 hover:bg-transparent hover:text-secondary-900"
-            onClick={handleCancel}
-          >
-            <X className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
+        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: spacing["spacing-sm"] }}>
+          <IconButton size="small" aria-label="Cancel edit" onClick={handleCancel}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+          <IconButton
+            size="small"
             aria-label="Save task"
+            color="primary"
             onClick={handleSave}
             loading={saving}
             disabled={!title.trim()}
           >
-            <Check className="size-4" />
-          </Button>
-        </div>
+            <CheckIcon fontSize="small" />
+          </IconButton>
+        </Box>
       </Card>
     );
   }
@@ -97,29 +101,37 @@ const TaskCard = ({ task }: { task: Task }) => {
       style={dragStyle}
       {...attributes}
       {...listeners}
-      className="flex touch-none cursor-grab items-start justify-between gap-spacing-sm p-spacing-md shadow-none active:cursor-grabbing"
+      variant="outlined"
+      sx={{
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        gap: spacing["spacing-sm"],
+        p: spacing["spacing-md"],
+        cursor: "grab",
+        touchAction: "none",
+        "&:active": { cursor: "grabbing" },
+      }}
     >
-      <p className="text-sm leading-sm text-secondary-900">{task.title}</p>
-      <div className="flex shrink-0 gap-spacing-xs">
-        <Button
-          variant="ghost"
-          size="sm"
+      <Typography variant="body2">{task.title}</Typography>
+      <Box sx={{ display: "flex", gap: spacing["spacing-xs"], flexShrink: 0 }}>
+        <IconButton
+          size="small"
           aria-label="Edit task"
-          className="text-secondary-400 hover:bg-transparent hover:text-secondary-900"
           onClick={() => setIsEditing(true)}
+          disabled={deleting}
         >
-          <Pencil className="size-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
+          <EditIcon fontSize="small" />
+        </IconButton>
+        <IconButton
+          size="small"
           aria-label="Delete task"
-          className="text-secondary-400 hover:bg-transparent hover:text-error"
           onClick={() => deleteTask({ variables: { id: task.id } })}
+          loading={deleting}
         >
-          <Trash2 className="size-4" />
-        </Button>
-      </div>
+          <DeleteIcon fontSize="small" />
+        </IconButton>
+      </Box>
     </Card>
   );
 };

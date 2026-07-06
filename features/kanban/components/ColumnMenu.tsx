@@ -1,15 +1,9 @@
 "use client";
 
 import { useMutation } from "@apollo/client/react";
-import { Loader2, MoreHorizontal } from "lucide-react";
-import { useState } from "react";
-
-import Button from "@/components/ui/Button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/Popover";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { Box, CircularProgress, IconButton, Menu, MenuItem } from "@mui/material";
+import { useState, type MouseEvent } from "react";
 
 import type { Column } from "../interfaces";
 import { CLEAR_COLUMN, DELETE_COLUMN, GET_COLUMNS } from "../queries";
@@ -21,7 +15,8 @@ const ColumnMenu = ({
   column: Column;
   onRename: () => void;
 }) => {
-  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
 
   const refetchQueries = [{ query: GET_COLUMNS }];
   const [clearColumn, { loading: clearing }] = useMutation(CLEAR_COLUMN, {
@@ -31,63 +26,45 @@ const ColumnMenu = ({
     refetchQueries,
   });
 
+  const handleOpen = (event: MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+
   const handleRename = () => {
-    setOpen(false);
+    handleClose();
     onRename();
   };
 
   const handleClear = async () => {
     await clearColumn({ variables: { id: column.id } });
-    setOpen(false);
+    handleClose();
   };
 
   const handleDelete = async () => {
     await deleteColumn({ variables: { id: column.id } });
-    setOpen(false);
+    handleClose();
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger>
-        <Button
-          variant="ghost"
-          size="sm"
-          aria-label="Column options"
-          className="text-secondary-500 hover:bg-transparent hover:text-secondary-900"
-        >
-          <MoreHorizontal className="size-5" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent align="end" className="w-48 min-w-0 p-spacing-sm">
-        <div className="flex flex-col">
-          <button
-            type="button"
-            className="radius-md cursor-pointer px-spacing-md py-spacing-sm text-left text-sm text-secondary-900 hover:bg-secondary-light"
-            onClick={handleRename}
-          >
-            Rename
-          </button>
-          <button
-            type="button"
-            disabled={clearing}
-            className="radius-md flex cursor-pointer items-center justify-between px-spacing-md py-spacing-sm text-left text-sm text-secondary-900 hover:bg-secondary-light disabled:cursor-not-allowed disabled:opacity-50"
-            onClick={handleClear}
-          >
+    <>
+      <IconButton size="small" aria-label="Column options" onClick={handleOpen}>
+        <MoreHorizIcon fontSize="small" />
+      </IconButton>
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        <MenuItem onClick={handleRename}>Rename</MenuItem>
+        <MenuItem onClick={handleClear} disabled={clearing}>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
             Clear
-            {clearing && <Loader2 className="size-4 animate-spin" />}
-          </button>
-          <button
-            type="button"
-            disabled={deleting}
-            className="radius-md flex cursor-pointer items-center justify-between px-spacing-md py-spacing-sm text-left text-sm text-error hover:bg-error-light disabled:cursor-not-allowed disabled:opacity-50"
-            onClick={handleDelete}
-          >
+            {clearing && <CircularProgress size={16} sx={{ ml: 1 }} />}
+          </Box>
+        </MenuItem>
+        <MenuItem onClick={handleDelete} disabled={deleting} sx={{ color: "error.main" }}>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
             Delete
-            {deleting && <Loader2 className="size-4 animate-spin" />}
-          </button>
-        </div>
-      </PopoverContent>
-    </Popover>
+            {deleting && <CircularProgress size={16} color="error" sx={{ ml: 1 }} />}
+          </Box>
+        </MenuItem>
+      </Menu>
+    </>
   );
 };
 

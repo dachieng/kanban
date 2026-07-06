@@ -1,29 +1,65 @@
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/Card";
-import Skeleton from "@/components/ui/Skeleton";
+import { Box, Card, CardContent, Skeleton } from "@mui/material";
+
+import { spacing } from "@/theme/theme";
 
 const SKELETON_COLUMNS = 3;
 
 const ColumnSkeleton = () => (
-  <Card className="flex w-80 min-h-96 shrink-0 grow-0 flex-col lg:w-full">
-    <CardHeader className="p-spacing-xl">
-      <Skeleton className="h-5 w-24" />
-    </CardHeader>
-    <CardContent className="flex flex-1 flex-col gap-spacing-md px-spacing-xl py-spacing-md">
-      <Skeleton className="h-14 w-full" />
-      <Skeleton className="h-14 w-full" />
+  <Card
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      flexShrink: 0,
+      flexGrow: 0,
+      minHeight: 384,
+      width: { xs: 320, lg: "100%" },
+    }}
+  >
+    <CardContent sx={{ borderBottom: "1px solid", borderColor: "divider", p: spacing["spacing-xl"] }}>
+      <Skeleton variant="text" width={96} height={20} />
     </CardContent>
-    <CardFooter className="px-spacing-xl pt-spacing-md pb-spacing-xl">
-      <Skeleton className="h-9 w-full" />
-    </CardFooter>
+    <CardContent
+      sx={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        gap: spacing["spacing-md"],
+        px: spacing["spacing-xl"],
+        py: spacing["spacing-md"],
+      }}
+    >
+      <Skeleton variant="rounded" height={56} />
+      <Skeleton variant="rounded" height={56} />
+    </CardContent>
+    <CardContent
+      sx={{
+        borderTop: "1px solid",
+        borderColor: "divider",
+        px: spacing["spacing-xl"],
+        pt: spacing["spacing-md"],
+        pb: spacing["spacing-xl"],
+      }}
+    >
+      <Skeleton variant="rounded" height={36} />
+    </CardContent>
   </Card>
 );
 
 const BoardSkeleton = () => (
-  <div className="flex items-start gap-spacing-xl overflow-x-auto pb-spacing-md lg:grid lg:grid-cols-5">
+  <Box
+    sx={{
+      display: { xs: "flex", lg: "grid" },
+      gridTemplateColumns: { lg: "repeat(5, 1fr)" },
+      alignItems: "flex-start",
+      gap: spacing["spacing-xl"],
+      overflowX: "auto",
+      pb: spacing["spacing-md"],
+    }}
+  >
     {Array.from({ length: SKELETON_COLUMNS }).map((_, index) => (
       <ColumnSkeleton key={index} />
     ))}
-  </div>
+  </Box>
 );
 
 export default BoardSkeleton;

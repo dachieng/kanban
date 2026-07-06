@@ -1,8 +1,9 @@
 "use client";
 
 import { closestCorners, DndContext, DragOverlay } from "@dnd-kit/core";
+import { Box, Card, Typography } from "@mui/material";
 
-import { Card } from "@/components/ui/Card";
+import { spacing } from "@/theme/theme";
 
 import AddColumnCard from "./components/AddColumnCard";
 import BoardSkeleton from "./components/BoardSkeleton";
@@ -28,29 +29,29 @@ const KanbanBoard = () => {
   const atColumnLimit = columns.length >= MAX_COLUMNS;
 
   return (
-    <div className="flex flex-col gap-spacing-2xl p-spacing-3xl">
+    <Box sx={{ display: "flex", flexDirection: "column", gap: spacing["spacing-2xl"], p: spacing["spacing-3xl"] }}>
       <KanbanHeader />
 
       {!loading && !error && !isRetrying && atColumnLimit && (
-        <p className="text-sm leading-sm text-error">
+        <Typography variant="body2" color="error.main">
           You can only create up to 5 columns.
-        </p>
+        </Typography>
       )}
 
       {loading || isRetrying ? (
         <>
           {isRetrying && (
-            <p className="text-sm leading-sm text-secondary-500">
+            <Typography variant="body2" color="text.secondary">
               Having trouble reaching the database, retrying… (attempt{" "}
               {attempt + 1} of {maxRetries})
-            </p>
+            </Typography>
           )}
           <BoardSkeleton />
         </>
       ) : error ? (
-        <p className="text-sm leading-sm text-error">
+        <Typography variant="body2" color="error.main">
           Couldn&apos;t load the board: {error.message}
-        </p>
+        </Typography>
       ) : (
         <DndContext
           sensors={sensors}
@@ -59,24 +60,31 @@ const KanbanBoard = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <div className="flex items-start gap-spacing-xl overflow-x-auto pb-spacing-md lg:grid lg:grid-cols-5">
+          <Box
+            sx={{
+              display: { xs: "flex", lg: "grid" },
+              gridTemplateColumns: { lg: "repeat(5, 1fr)" },
+              alignItems: "flex-start",
+              gap: spacing["spacing-xl"],
+              overflowX: "auto",
+              pb: spacing["spacing-md"],
+            }}
+          >
             {columns.map((column) => (
               <KanbanColumn key={column.id} column={column} />
             ))}
             {!atColumnLimit && <AddColumnCard />}
-          </div>
+          </Box>
           <DragOverlay>
             {activeTask && (
-              <Card className="flex items-start gap-spacing-sm p-spacing-md shadow-md">
-                <p className="text-sm leading-sm text-secondary-900">
-                  {activeTask.title}
-                </p>
+              <Card sx={{ display: "flex", alignItems: "flex-start", gap: spacing["spacing-sm"], p: spacing["spacing-md"] }}>
+                <Typography variant="body2">{activeTask.title}</Typography>
               </Card>
             )}
           </DragOverlay>
         </DndContext>
       )}
-    </div>
+    </Box>
   );
 };
 

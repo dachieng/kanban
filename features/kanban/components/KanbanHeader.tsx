@@ -1,33 +1,33 @@
-import { ChevronRight } from "lucide-react";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { Box, Breadcrumbs, Typography } from "@mui/material";
+
+import { spacing } from "@/theme/theme";
 
 const breadcrumbs = ["Dashboard", "Kanban"];
 
-const KanbanHeader = () => {
-  return (
-    <header className="flex flex-col gap-spacing-xs">
-      <h1 className="text-xl leading-xl font-semibold text-secondary-900">
-        Kanban
-      </h1>
-      <nav className="flex items-center gap-spacing-xs text-sm leading-sm">
-        {breadcrumbs.map((crumb, index) => (
-          <span key={crumb} className="flex items-center gap-spacing-xs">
-            {index > 0 && (
-              <ChevronRight className="size-4 text-secondary-400" />
-            )}
-            <span
-              className={
-                index === breadcrumbs.length - 1
-                  ? "font-medium text-secondary-900"
-                  : "text-secondary-500"
-              }
-            >
-              {crumb}
-            </span>
-          </span>
-        ))}
-      </nav>
-    </header>
-  );
-};
+const KanbanHeader = () => (
+  <Box
+    component="header"
+    sx={{ display: "flex", flexDirection: "column", gap: spacing["spacing-xs"] }}
+  >
+    <Typography variant="h6">Kanban</Typography>
+    <Breadcrumbs
+      separator={<ChevronRightIcon sx={{ fontSize: 16, color: "text.disabled" }} />}
+    >
+      {breadcrumbs.map((crumb, index) => (
+        <Typography
+          key={crumb}
+          variant="body2"
+          sx={{
+            color: index === breadcrumbs.length - 1 ? "text.primary" : "text.secondary",
+            fontWeight: index === breadcrumbs.length - 1 ? 500 : 400,
+          }}
+        >
+          {crumb}
+        </Typography>
+      ))}
+    </Breadcrumbs>
+  </Box>
+);
 
 export default KanbanHeader;

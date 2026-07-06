@@ -1,11 +1,10 @@
 "use client";
 
 import { useMutation } from "@apollo/client/react";
+import { Box, Button, Card, CardContent, TextField } from "@mui/material";
 import { useState, type KeyboardEvent } from "react";
 
-import Button from "@/components/ui/Button";
-import { Card, CardContent } from "@/components/ui/Card";
-import Input from "@/components/ui/Input";
+import { spacing } from "@/theme/theme";
 
 import { CREATE_COLUMN, GET_COLUMNS } from "../queries";
 
@@ -43,40 +42,49 @@ const AddColumnCard = () => {
   };
 
   return (
-    <Card className="flex w-80 shrink-0 grow-0 flex-col lg:w-full">
-      <CardContent className="flex flex-col gap-spacing-sm p-spacing-xl">
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        flexShrink: 0,
+        flexGrow: 0,
+        width: { xs: 320, lg: "100%" },
+      }}
+    >
+      <CardContent
+        sx={{ display: "flex", flexDirection: "column", gap: spacing["spacing-sm"], p: spacing["spacing-xl"] }}
+      >
         {isAdding ? (
           <>
-            <Input
+            <TextField
               label="Name"
               required
               placeholder="e.g. In Progress"
               value={name}
               onChange={(event) => setName(event.target.value)}
               onKeyDown={handleKeyDown}
-              error={error ?? undefined}
+              error={Boolean(error)}
+              helperText={error}
               autoFocus
+              fullWidth
+              size="small"
             />
-            <div className="flex justify-between gap-spacing-md">
-              <Button variant="ghost" size="sm" onClick={handleCancel}>
+            <Box sx={{ display: "flex", justifyContent: "space-between", gap: spacing["spacing-md"] }}>
+              <Button variant="text" onClick={handleCancel}>
                 Cancel
               </Button>
               <Button
-                size="sm"
+                variant="contained"
                 onClick={handleAdd}
                 loading={loading}
                 disabled={!name.trim()}
               >
                 Add
               </Button>
-            </div>
+            </Box>
           </>
         ) : (
-          <Button
-            variant="ghost"
-            className="w-full"
-            onClick={() => setIsAdding(true)}
-          >
+          <Button variant="text" fullWidth onClick={() => setIsAdding(true)}>
             Add Column
           </Button>
         )}

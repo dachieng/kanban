@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 import ApolloClientProvider from "@/components/providers/ApolloClientProvider";
+import MuiThemeProvider from "@/components/providers/MuiThemeProvider";
 import ServiceWorkerRegistration from "@/components/providers/ServiceWorkerRegistration";
 
 import "./globals.css";
@@ -39,7 +40,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body>
-        <ApolloClientProvider>{children}</ApolloClientProvider>
+        <MuiThemeProvider>
+          <ApolloClientProvider>{children}</ApolloClientProvider>
+        </MuiThemeProvider>
         <ServiceWorkerRegistration />
       </body>
     </html>
