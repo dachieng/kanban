@@ -8,12 +8,14 @@ A Kanban board (columns + draggable task cards) built with Next.js, a GraphQL AP
 - **Apollo Server** (embedded in a Next.js Route Handler) + **Apollo Client** (`InMemoryCache` doubles as client-side state management)
 - **Neon Postgres** + **Drizzle ORM** for the schema and versioned migrations
 - **Tailwind CSS v4**, with a token-driven design system under `theme/`
+- **`@dnd-kit`** for drag-and-drop between columns
+- A service worker + web app manifest, so the board is installable as a PWA
 
 ## Prerequisites
 
 - Node.js 24+
 - [pnpm](https://pnpm.io)
-- A free [Neon](https://neon.tech) Postgres project (just need its connection string — no local Postgres install required)
+- A free [Neon](https://neon.tech) Postgres project (just need its connection string - no local Postgres install required)
 
 ## Getting started
 
@@ -62,12 +64,19 @@ A Kanban board (columns + draggable task cards) built with Next.js, a GraphQL AP
 app/                          Next.js routes only
   page.tsx                    Home route
   layout.tsx                  Root layout, wraps the app in ApolloProvider
+  manifest.ts                 Web app manifest (PWA installability)
   api/graphql/route.ts        Apollo Server, mounted as a Route Handler
 components/
-  ui/                         Reusable design-system components (Button, Input, Card, Popover)
-  providers/                  ApolloClientProvider (Client Component)
+  ui/                         Reusable design-system components (Button, Input, Card, Popover, Skeleton)
+  providers/                  ApolloClientProvider, ServiceWorkerRegistration (Client Components)
 theme/                        Design tokens (colors, spacing, radius, typography), sourced from Figma
 tailwind.config.ts            Wires theme/ tokens into Tailwind
+features/kanban/
+  index.tsx                   KanbanBoard
+  components/                 AddColumnCard, KanbanColumn, KanbanHeader, ColumnMenu, TaskCard, BoardSkeleton
+  hooks/useKanbanDnd.ts        Drag-and-drop state + handlers
+  interfaces/                 Task/Column types
+  queries/                    GraphQL documents used by this feature
 graphql/
   schema.ts                   GraphQL SDL (Query/Mutation/types)
   resolvers.ts                Resolvers, delegate straight to store.ts
@@ -77,7 +86,14 @@ db/
   client.ts                   Drizzle client wired to Neon's HTTP driver
 drizzle/                      Versioned, committed SQL migrations
 drizzle.config.ts             drizzle-kit configuration
+public/
+  sw.js                       Service worker (network-first, cache fallback)
+  icons/                      Favicons + PWA icons
 ```
+
+## Progressive Web App
+
+`app/manifest.ts` (served at `/manifest.webmanifest`) and `public/sw.js` (registered from `components/providers/ServiceWorkerRegistration.tsx`) make the board installable on mobile/desktop.
 
 ## Environment variables
 
