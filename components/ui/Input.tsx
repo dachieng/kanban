@@ -5,6 +5,8 @@ import {
   type ReactNode,
 } from "react";
 
+import { cn } from "@/lib/cn";
+
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   required?: boolean;
@@ -34,7 +36,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputId = id ?? generatedId;
     const message = error ?? hint;
 
-    const inputClasses = [
+    const inputClasses = cn(
       "radius-md w-full border bg-white py-spacing-sm px-spacing-lg text-sm leading-sm text-secondary-900 transition-colors placeholder:text-secondary-400 focus:outline-none disabled:cursor-not-allowed disabled:bg-secondary-50 disabled:text-secondary-400",
       startIcon ? "pl-9" : "",
       endIcon ? "pr-9" : "",
@@ -42,9 +44,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         ? "border-error focus:border-error focus:ring-1 focus:ring-error"
         : "border-secondary-light focus:border-brand focus:ring-1 focus:ring-brand",
       className,
-    ]
-      .filter(Boolean)
-      .join(" ");
+    );
 
     return (
       <div className="flex flex-col gap-spacing-xs">

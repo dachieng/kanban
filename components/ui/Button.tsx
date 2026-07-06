@@ -1,4 +1,7 @@
+import { Loader2 } from "lucide-react";
 import type { ButtonHTMLAttributes } from "react";
+
+import { cn } from "@/lib/cn";
 
 export type ButtonVariant =
   | "primary"
@@ -36,24 +39,30 @@ const sizeClasses: Record<ButtonSize, string> = {
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  loading?: boolean;
 }
 
 const Button = ({
   variant = "primary",
   size = "md",
   className,
+  loading = false,
+  disabled,
+  children,
   ...props
 }: ButtonProps) => {
-  const classes = [
+  const classes = cn(
     "inline-flex cursor-pointer items-center justify-center whitespace-nowrap border text-sm leading-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
     variantClasses[variant],
     sizeClasses[size],
     className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  );
 
-  return <button className={classes} {...props} />;
+  return (
+    <button className={classes} disabled={disabled || loading} {...props}>
+      {loading ? <Loader2 className="size-4 animate-spin" /> : children}
+    </button>
+  );
 };
 
 export default Button;

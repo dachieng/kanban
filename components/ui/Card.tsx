@@ -1,15 +1,16 @@
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, Ref } from "react";
 
-const cx = (...classes: Array<string | false | undefined>) =>
-  classes.filter(Boolean).join(" ");
+import { cn as cx } from "@/lib/cn";
 
 export const Card = ({
   className,
+  ref,
   ...props
-}: HTMLAttributes<HTMLDivElement>) => (
+}: HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> }) => (
   <div
+    ref={ref}
     className={cx(
-      "radius-lg border border-secondary-200 bg-white shadow-sm",
+      "radius-sm border border-secondary-200 bg-white shadow-sm",
       className,
     )}
     {...props}
@@ -21,7 +22,10 @@ export const CardHeader = ({
   ...props
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cx("flex flex-col gap-spacing-sm p-spacing-3xl", className)}
+    className={cx(
+      "flex flex-col gap-spacing-sm border-b border-secondary-light p-spacing-3xl",
+      className,
+    )}
     {...props}
   />
 );
@@ -62,7 +66,7 @@ export const CardFooter = ({
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cx(
-      "flex items-center gap-spacing-md px-spacing-3xl pb-spacing-3xl",
+      "flex items-center gap-spacing-md border-t border-secondary-light px-spacing-3xl pt-spacing-md pb-spacing-3xl",
       className,
     )}
     {...props}
