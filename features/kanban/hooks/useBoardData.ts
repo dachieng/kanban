@@ -1,11 +1,12 @@
 import { useQuery } from "@apollo/client/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import type { GetColumnsData } from "@/features/kanban/interfaces";
+import type { Column, GetColumnsData } from "@/features/kanban/interfaces";
 import { GET_COLUMNS } from "@/features/kanban/queries";
 
 const MAX_RETRIES = 3;
 const BASE_DELAY_MS = 500;
+const EMPTY_COLUMNS: Column[] = [];
 
 const useBoardData = () => {
   const { data, loading, error, refetch } = useQuery<GetColumnsData>(GET_COLUMNS);
@@ -29,9 +30,12 @@ const useBoardData = () => {
   }, [error, attempt, refetch]);
 
   const isRetrying = Boolean(error) && attempt < MAX_RETRIES;
+  const serializedColumns = JSON.stringify(data?.columns);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const columns = useMemo(() => data?.columns ?? EMPTY_COLUMNS, [serializedColumns]);
 
   return {
-    columns: data?.columns ?? [],
+    columns,
     loading,
     error: isRetrying ? undefined : error,
     isRetrying,
