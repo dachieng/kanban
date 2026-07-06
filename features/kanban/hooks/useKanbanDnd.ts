@@ -10,8 +10,8 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
 
-import type { Column, Task } from "../interfaces";
-import { GET_COLUMNS, MOVE_TASK } from "../queries";
+import type { Column, Task } from "@/features/kanban/interfaces";
+import { GET_COLUMNS, MOVE_TASK } from "@/features/kanban/queries";
 
 const findColumnOf = (columns: Column[], id: string) =>
   columns.find((column) => column.tasks.some((task) => task.id === id));
